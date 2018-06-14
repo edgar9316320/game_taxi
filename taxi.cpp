@@ -1,6 +1,8 @@
 #include <iostream>
+# include <graphalgorithms.H>
 #include "taxi.h"
 
+using namespace Designar;
 
 using namespace sf;
 using namespace std;
@@ -29,6 +31,13 @@ void taxi::inic()
 //-----------------------------------------------------------
 //CARGA DE IMAGENES
 
+  shape.setRadius(10);
+  shape.setPosition(10, 50);
+  shape.setFillColor(Color(246, 246, 246));
+
+  // set a 10-pixel wide orange outline
+  shape.setOutlineThickness(10);
+  shape.setOutlineColor(sf::Color(246, 246, 246,80));
   
 }
 
@@ -81,9 +90,12 @@ void taxi::update()
 
 void taxi::render()
 {
-  window.clear();
+  window.clear(sf::Color(130,130,130));
 
 
+
+  window.draw(shape);
+  
 
   window.display();
 
@@ -113,7 +125,7 @@ void taxi::run()
           update();
 
           render();
- 
+        
         //}
 
       }

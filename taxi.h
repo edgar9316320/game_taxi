@@ -29,7 +29,7 @@ class taxi
       SoundBuffer buffer;
       Sound sonido;
 
-      
+      CircleShape shape;
       
 
       //variables de prueba

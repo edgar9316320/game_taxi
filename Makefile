@@ -4,18 +4,29 @@
 
 #g++ main.o crazyball.o -o crazyball -L ~/Descargas/Aleph-w -lAleph-w -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-LIBS = -L $(DESIGNAR)/lib -lDesignar -lgsl -lgslcblas -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-DESIGNAR = /home/edgar/Descargas/AYDA/lab04/DeSiGNAR
+DESIGNAR = ~/Descargas/AYDA/lab04/DeSiGNAR
 
-programa: main.o taxi.o
-	g++ main.o taxi.o -o taxi -L $(RUT)/include $(LIBS)
-#lAleph-w -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+CXX = clang++ -std=c++14
 
-main.o: main.cpp taxi.h
-	g++ -c main.cpp -I $(RUT)/include
+WARN = -Wall -Wextra -Wcast-align -Wno-sign-compare -Wno-write-strings \
+       -Wno-parentheses -Wno-invalid-source-encoding
 
-taxi.o: taxi.cpp taxi.h
-	g++ -c taxi.cpp -I $(RUT)/include
+FLAGS = -DDEBUG -D_GLIBCXX__PTHREADS -g -O0 $(WARN) 
+
+OPT = -DNDEBUG -Ofast $(WARN)
+
+INCLUDE = -I. -I $(DESIGNAR)/include 
+
+LIBS = taxi.o -L $(DESIGNAR)/lib -lDesignar -lgsl -lgslcblas -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
+all: main
+
+main: taxi.o main.cpp
+	$(CXX) $(FLAGS) $(INCLUDE) $@.cpp -o $@ $(LIBS)
+
+taxi.o: taxi.h taxi.cpp
+	$(CXX) -c $(FLAGS) $(INCLUDE) taxi.cpp
 
 clean:
-	rm -f ~*.o
+	$(RM) *~ main *.o
+
