@@ -38,8 +38,24 @@ void taxi::inic()
   shape.setFillColor(Color(246, 246, 246));
 
   //obstaculos
-  obs1.setSize(Vector2f(125,80));
-  obs1.setPosition(100,80);
+  obs[0].setSize(Vector2f(125,90));
+  obs[1].setSize(Vector2f(125,90));
+  obs[2].setSize(Vector2f(80,130));
+  obs[3].setSize(Vector2f(125,90));
+  obs[4].setSize(Vector2f(125,90));
+  obs[5].setSize(Vector2f(125,90));
+  obs[6].setSize(Vector2f(125,90));
+  obs[7].setSize(Vector2f(125,90));
+
+  obs[0].setPosition(100,100);
+  obs[1].setPosition(150,150);
+  obs[2].setPosition(200,200);
+  obs[3].setPosition(300,300);
+  obs[4].setPosition(400,400);
+  obs[5].setPosition(500,500);
+  obs[6].setPosition(600,680);
+  obs[7].setPosition(600,280);
+
   // set a 10-pixel wide orange outline
   shape.setOutlineThickness(10);
   shape.setOutlineColor(sf::Color(246, 246, 246,80));
@@ -49,14 +65,14 @@ void taxi::inic()
 
 void taxi::eventos()
 {
-  /*  while (window.pollEvent(evee))
+    while (window.pollEvent(evee))
     {
       if (evee.type == Event::Closed)
           isPlay = false;
 
 
 
-      if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::W)
+      /*if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::W)
           jump = true;
 
       if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::Space)
@@ -72,11 +88,11 @@ void taxi::eventos()
       if (evee.type == Event::KeyPressed && evee.key.code == Keyboard::A)
           atras = true;
       if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::A)
-          atras = false;
+          atras = false;*/
 
 
     }
-    */
+    
 }
 
 
@@ -100,10 +116,15 @@ void taxi::render()
 
 
   window.draw(shape);
-  window.draw(obs1);
   
+  for (int i = 0; i < 8; ++i)
+  {
+    /* code */
+    window.draw(obs[i]);
+  }
+  
+    window.display();
 
-  window.display();
 
 }
 

@@ -31,8 +31,8 @@ class taxi
 
       CircleShape shape;
       //obstaculos
-      RectangleShape obs1;
-
+      RectangleShape obs[8];
+      int i=0;
       //variables de prueba
 
       void inic();
