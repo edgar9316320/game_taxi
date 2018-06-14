@@ -7,12 +7,7 @@
 #include <string.h>
 #include <random>
 
-//#include "balon.h"
-
 using namespace sf;
-
-
-
 
 class taxi
 {
@@ -25,9 +20,9 @@ class taxi
 
       bool isPlay{true};
       int fps;
-      //variables de sonido
-      SoundBuffer buffer;
-      Sound sonido;
+      //variables de TEXTO
+      Font fuente1;
+      Text txt_titulo;
 
       CircleShape shape;
       //obstaculos
@@ -47,7 +42,7 @@ class taxi
     public:
       taxi();
       void run();
-
+      void mover(int a,int b);
 
 };
 

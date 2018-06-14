@@ -1,6 +1,5 @@
 #include <iostream>
 #include <graphalgorithms.H>
-#include <string>
 #include "taxi.h"
 
 using namespace Designar;
@@ -8,7 +7,8 @@ using namespace Designar;
 using namespace sf;
 using namespace std;
 
-//using mgra = Digraph<RectangleShape, string>;
+using mgra = Digraph<RectangleShape, Text>;
+
 const int TAM_HOR = 800, TAM_VER = 600, radioo = 15;
 
 taxi::taxi():window{VideoMode{TAM_HOR,TAM_VER},"taxi"}
@@ -31,47 +31,56 @@ void taxi::inic()
   window.setVerticalSyncEnabled(true);
 
 //-----------------------------------------------------------
-//CARGA DE IMAGENES
-
+//
   shape.setRadius(10);
   shape.setPosition(10, 50);
   shape.setFillColor(Color(144, 148, 151));
-
-  //obstaculos
-  obs[0].setSize(Vector2f(200,100));
-  obs[0].setFillColor(Color(255, 87, 51));
-
-  obs[1].setSize(Vector2f(200,100));
-  obs[1].setFillColor(Color(86, 101, 115));
-
-  obs[2].setSize(Vector2f(100,230));
-  obs[2].setFillColor(Color(255, 87, 51));
-
-  obs[3].setSize(Vector2f(50,150));
-  obs[3].setFillColor(Color(86, 101, 115));
-
-  obs[4].setSize(Vector2f(100,150));
-  obs[4].setFillColor(Color(255, 87, 51));
-
-  obs[5].setSize(Vector2f(200,50));
-  obs[5].setFillColor(Color(86, 101, 115));
-  obs[6].setSize(Vector2f(125,90));
-  obs[7].setSize(Vector2f(125,90));
-
-  obs[0].setPosition(50 ,100);
-  obs[1].setPosition(300,100);
-  obs[2].setPosition(550,100);
-  obs[3].setPosition(700,100);
-
-  obs[4].setPosition(50,250);
-  obs[5].setPosition(200,250);
-
-  obs[6].setPosition(600,680);
-  obs[7].setPosition(600,280);
-
-  // set a 10-pixel wide orange outline
+  // linea de afuera de la pelota
   shape.setOutlineThickness(10);
   shape.setOutlineColor(sf::Color(144, 148, 151,80));
+
+  //OBSTACULOS-----------------------------
+  //colores
+  obs[0].setFillColor(Color(255,  87, 51));
+  obs[1].setFillColor(Color(86 , 101, 115));
+  obs[2].setFillColor(Color(255,  87, 51));
+  obs[3].setFillColor(Color(86 , 101, 115));
+  obs[4].setFillColor(Color(255,  87, 51));
+  obs[5].setFillColor(Color(86 , 101, 115));
+  obs[6].setFillColor(Color(255,  87, 51));
+  obs[7].setFillColor(Color(86 , 101, 115));
+
+
+  //tamaños                X    Y
+  obs[0].setSize(Vector2f(200, 100));
+  obs[1].setSize(Vector2f(200, 100));
+  obs[2].setSize(Vector2f(100, 230));
+  obs[3].setSize(Vector2f(50 , 150));
+  obs[4].setSize(Vector2f(100, 150));
+  obs[5].setSize(Vector2f(200, 50));
+  obs[6].setSize(Vector2f(125, 90));
+  obs[7].setSize(Vector2f(125, 90));
+  //Posiciones        X    Y
+  obs[0].setPosition(50 , 100);
+  obs[1].setPosition(300, 100);
+  obs[2].setPosition(550, 100);
+  obs[3].setPosition(700, 100);
+
+  obs[4].setPosition(50 , 250);
+  obs[5].setPosition(200, 250);
+  obs[6].setPosition(400, 250);
+  obs[7].setPosition(600, 350);
+//---------------------------------------------------
+  
+  //TEXTO
+  fuente1.loadFromFile("Fuentes/seguili.ttf");
+  //variables de texto
+  txt_titulo.setFont(fuente1);
+  txt_titulo.setString("Life:");
+  txt_titulo.setPosition(500,15);
+  txt_titulo.setColor(Color::Black);
+
+
   
 
 }
@@ -86,38 +95,41 @@ void taxi::eventos()
 
 
 
-      //if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::D)
-        //  shape.move(5,0);
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-          shape.move(-5, 0);
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-          shape.move(5, 0);
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-          shape.move(0, 5);
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-          shape.move(0, -5);
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+          mover(-5,i);
+                 
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+          mover(5, i);
+              
       
-      /*if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::Space)
-          patear = true;
-
-      //----Caminar hacia adelante-----------------
-      if (evee.type == Event::KeyPressed && evee.key.code == Keyboard::D)
-          caminar = true;
-      if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::D)
-          caminar = false;
-
-      //----Caminar hacia atras-----------------
-      if (evee.type == Event::KeyPressed && evee.key.code == Keyboard::A)
-          atras = true;
-      if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::A)
-          atras = false;*/
-
-
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+          mover(i, 5);
+              
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+          mover(i, -5);
+            
     }
     
 }
 
+void taxi::mover(int a,int b)
+{
+
+    if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
+        shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
+        shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
+        shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
+        shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
+        )
+    {
+      shape.move(-a, -b);
+    }else
+    {
+       shape.move(a, b);
+      
+    }
+
+}
 
 
 void taxi::update()
@@ -125,7 +137,7 @@ void taxi::update()
 
   //---------------------------------------------------------
 
-
+   
 
   
 }
@@ -139,6 +151,7 @@ void taxi::render()
 
 
   window.draw(shape);
+  window.draw(txt_titulo);
   
   for (int i = 0; i < 8; ++i)
   {
