@@ -30,7 +30,8 @@ class taxi
       Sound sonido;
 
       CircleShape shape;
-      
+      //obstaculos
+      RectangleShape obs1;
 
       //variables de prueba
 

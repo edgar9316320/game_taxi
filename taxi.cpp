@@ -1,5 +1,6 @@
 #include <iostream>
-# include <graphalgorithms.H>
+#include <graphalgorithms.H>
+#include <string>
 #include "taxi.h"
 
 using namespace Designar;
@@ -7,6 +8,7 @@ using namespace Designar;
 using namespace sf;
 using namespace std;
 
+//using mgra = Digraph<RectangleShape, string>;
 const int TAM_HOR = 800, TAM_VER = 600, radioo = 15;
 
 taxi::taxi():window{VideoMode{TAM_HOR,TAM_VER},"taxi"}
@@ -35,6 +37,9 @@ void taxi::inic()
   shape.setPosition(10, 50);
   shape.setFillColor(Color(246, 246, 246));
 
+  //obstaculos
+  obs1.setSize(Vector2f(125,80));
+  obs1.setPosition(100,80);
   // set a 10-pixel wide orange outline
   shape.setOutlineThickness(10);
   shape.setOutlineColor(sf::Color(246, 246, 246,80));
@@ -95,6 +100,7 @@ void taxi::render()
 
 
   window.draw(shape);
+  window.draw(obs1);
   
 
   window.display();
