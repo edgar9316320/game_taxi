@@ -35,31 +35,45 @@ void taxi::inic()
 
   shape.setRadius(10);
   shape.setPosition(10, 50);
-  shape.setFillColor(Color(246, 246, 246));
+  shape.setFillColor(Color(144, 148, 151));
 
   //obstaculos
-  obs[0].setSize(Vector2f(125,90));
-  obs[1].setSize(Vector2f(125,90));
-  obs[2].setSize(Vector2f(80,130));
-  obs[3].setSize(Vector2f(125,90));
-  obs[4].setSize(Vector2f(125,90));
-  obs[5].setSize(Vector2f(125,90));
+  obs[0].setSize(Vector2f(200,100));
+  obs[0].setFillColor(Color(255, 87, 51));
+
+  obs[1].setSize(Vector2f(200,100));
+  obs[1].setFillColor(Color(86, 101, 115));
+
+  obs[2].setSize(Vector2f(100,230));
+  obs[2].setFillColor(Color(255, 87, 51));
+
+  obs[3].setSize(Vector2f(50,150));
+  obs[3].setFillColor(Color(86, 101, 115));
+
+  obs[4].setSize(Vector2f(100,150));
+  obs[4].setFillColor(Color(255, 87, 51));
+
+  obs[5].setSize(Vector2f(200,50));
+  obs[5].setFillColor(Color(86, 101, 115));
   obs[6].setSize(Vector2f(125,90));
   obs[7].setSize(Vector2f(125,90));
 
-  obs[0].setPosition(100,100);
-  obs[1].setPosition(150,150);
-  obs[2].setPosition(200,200);
-  obs[3].setPosition(300,300);
-  obs[4].setPosition(400,400);
-  obs[5].setPosition(500,500);
+  obs[0].setPosition(50 ,100);
+  obs[1].setPosition(300,100);
+  obs[2].setPosition(550,100);
+  obs[3].setPosition(700,100);
+
+  obs[4].setPosition(50,250);
+  obs[5].setPosition(200,250);
+
   obs[6].setPosition(600,680);
   obs[7].setPosition(600,280);
 
   // set a 10-pixel wide orange outline
   shape.setOutlineThickness(10);
-  shape.setOutlineColor(sf::Color(246, 246, 246,80));
+  shape.setOutlineColor(sf::Color(144, 148, 151,80));
   
+
 }
 
 
@@ -72,10 +86,19 @@ void taxi::eventos()
 
 
 
-      /*if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::W)
-          jump = true;
+      //if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::D)
+        //  shape.move(5,0);
 
-      if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::Space)
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+          shape.move(-5, 0);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+          shape.move(5, 0);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+          shape.move(0, 5);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+          shape.move(0, -5);
+      
+      /*if (evee.type == Event::KeyReleased && evee.key.code == Keyboard::Space)
           patear = true;
 
       //----Caminar hacia adelante-----------------
@@ -111,7 +134,7 @@ void taxi::update()
 
 void taxi::render()
 {
-  window.clear(sf::Color(130,130,130));
+  window.clear(sf::Color(244,246,246));
 
 
 
