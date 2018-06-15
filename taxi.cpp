@@ -152,6 +152,71 @@ void taxi::inic()
   g_paradas[15].setPosition(TAM_CEL*8,TAM_CEL*11);
   g_paradas[16].setPosition(TAM_CEL*12,TAM_CEL*11);
   g_paradas[17].setPosition(TAM_CEL*15,TAM_CEL*11);
+
+  //descripcion del grafo
+
+  for (int i = 0; i < 20; ++i)
+  {
+    g_des[i].setString("P"+char(i));
+
+  }
+  
+  //creando el grafo
+
+  for (int i = 0; i < 20; ++i)
+  {
+    /* code */
+     gn[i] = grafo.insert_node(g_paradas[i]);
+  }
+
+   //arcos del primer nodo
+    grafo.insert_arc(gn[0], gn[1]);
+    grafo.insert_arc(gn[0], gn[6]);
+    //arcos del segundo nodo
+    grafo.insert_arc(gn[1], gn[2]);
+    grafo.insert_arc(gn[1], gn[6]);
+    grafo.insert_arc(gn[1], gn[7]);
+    //arcos del tercer nodo
+    grafo.insert_arc(gn[2], gn[3]);
+    grafo.insert_arc(gn[2], gn[7]);
+    grafo.insert_arc(gn[2], gn[8]);
+    //arcos del cuarto nodo
+    grafo.insert_arc(gn[3], gn[4]);
+    grafo.insert_arc(gn[3], gn[8]);
+    grafo.insert_arc(gn[3], gn[9]);
+    //arcos del quinto nodo
+    grafo.insert_arc(gn[4], gn[9]);
+    //arcos del sexto nodo
+    grafo.insert_arc(gn[5], gn[6]);
+    grafo.insert_arc(gn[5], gn[13]);
+    grafo.insert_arc(gn[5], gn[10]);
+
+    grafo.insert_arc(gn[6], gn[7]);
+    grafo.insert_arc(gn[6], gn[10]);
+
+    grafo.insert_arc(gn[7], gn[8]);
+
+    grafo.insert_arc(gn[8], gn[9]);
+    grafo.insert_arc(gn[8], gn[11]);
+    grafo.insert_arc(gn[8], gn[12]);
+
+    grafo.insert_arc(gn[9], gn[12]);
+    grafo.insert_arc(gn[9], gn[17]);
+
+    grafo.insert_arc(gn[10], gn[11]);
+    grafo.insert_arc(gn[10], gn[13]);
+    grafo.insert_arc(gn[10], gn[14]);
+
+    grafo.insert_arc(gn[11], gn[12]);
+    grafo.insert_arc(gn[11], gn[15]);
+
+    grafo.insert_arc(gn[12], gn[16]);
+    grafo.insert_arc(gn[12], gn[17]);
+
+    grafo.insert_arc(gn[14], gn[15]);
+    grafo.insert_arc(gn[15], gn[16]);
+    grafo.insert_arc(gn[16], gn[17]);
+
   //---------------------------------------------------
 
 
@@ -260,30 +325,17 @@ void taxi::render()
       /* code */
       window.draw(lineas_v[j]);
       window.draw(lineas_h[j]);
+      window.draw(obs[j]);
+      window.draw(g_paradas[j]);
+      window.draw(g_des[j]);
       
     }
   
-  for (int i = 0; i < 15; ++i)
-  {
-    /* code */
-    window.draw(obs[i]);
-  }
-
-  
-
   window.draw(txt_titulo);
-
-
-
   window.draw(s_obs_1);
-  for (int i = 0; i < 20; ++i)
-  {
-    window.draw(g_paradas[i]);
-    
-  }
   window.draw(shape);
-  
-    window.display();
+
+  window.display();
 
 
 }

@@ -13,7 +13,7 @@ using namespace Designar;
 
 using namespace sf;
 
-using mgra = Digraph<RectangleShape, Text>;
+using mgra = Digraph<RectangleShape>;
 
 
 class taxi
@@ -42,8 +42,10 @@ class taxi
       //grafo
 
       mgra grafo;
+      mgra::Node * gn[20];
+
       RectangleShape g_paradas[20];
-      Text g_des[15];
+      Text g_des[20];
 
 
       //texturas------
