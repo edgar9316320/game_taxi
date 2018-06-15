@@ -12,6 +12,9 @@ using mgra = Digraph<RectangleShape, Text>;
 const int TAM_HOR = 800, TAM_VER = 600;
 const int VEL_BALL = 8;
 
+
+const int TAM_CEL = 50;
+
 taxi::taxi():window{VideoMode{TAM_HOR,TAM_VER},"taxi"}
 {
 
@@ -39,7 +42,9 @@ void taxi::inic()
       std::cout << "error" << '\n';
     }
   s_home.setTexture(t_home);
-  s_home.setPosition(50,100);
+  s_home.setPosition(55,105);
+  s_home.setScale(0.3,0.3);
+  s_home.setColor(Color(209, 198, 196));
 
 
 
@@ -50,7 +55,7 @@ void taxi::inic()
   shape.setFillColor(Color(255, 56, 25));
   // linea de afuera de la pelota
   shape.setOutlineThickness(10);
-  shape.setOutlineColor(sf::Color(144, 148, 151,80));
+  shape.setOutlineColor(Color(144, 148, 151,80));
   int j=0, u = 0;
 
   for (int i = 0; i < 20; ++i)
@@ -60,6 +65,7 @@ void taxi::inic()
       lineas_v[i].setPosition(j,0);
 
       lineas_v[i].setSize(Vector2f(1,600));
+      lineas_v[i].setFillColor(Color(16,16,16));
    
   }
    for (int i = 0; i < 20; ++i)
@@ -67,7 +73,7 @@ void taxi::inic()
     u += 50;
     
       lineas_h[i].setPosition(0,u);
-
+      lineas_h[i].setFillColor(Color(16,16,16));
       lineas_h[i].setSize(Vector2f(800,1));
    
   }
@@ -83,10 +89,11 @@ void taxi::inic()
   obs[6].setFillColor(Color(255, 56, 25));
   obs[7].setFillColor(Color(255, 56, 25));
   obs[8].setFillColor(Color(255, 56, 25));
-  
   obs[9].setFillColor(Color(255, 56, 25));
   obs[10].setFillColor(Color(255, 56, 25));
   obs[11].setFillColor(Color(255, 56, 25));
+  obs[12].setFillColor(Color(255, 56, 25));
+  obs[13].setFillColor(Color(255, 56, 25));
 
 
   //tamaños                X    Y
@@ -103,20 +110,26 @@ void taxi::inic()
   obs[9].setSize(Vector2f(150, 100));
   obs[10].setSize(Vector2f(150, 100));
   obs[11].setSize(Vector2f(150, 100));
+  obs[12].setSize(Vector2f(200, 50));
+  obs[13].setSize(Vector2f(100, 100));
 
-  //Posiciones        X    Y
-  obs[0].setPosition(50 , 100);
-  obs[1].setPosition(300, 100);
-  obs[2].setPosition(550, 100);
-  obs[3].setPosition(700, 100);
-  obs[4].setPosition(50 , 250);
-  obs[5].setPosition(200, 250);
-  obs[6].setPosition(400, 250);
-  obs[7].setPosition(200, 350);
-  obs[8].setPosition(50,  400);
-  obs[9].setPosition(50, 500);
-  obs[10].setPosition(250, 450);
-  obs[11].setPosition(450,  450);
+
+  //Posiciones          X           Y
+  obs[0].setPosition(TAM_CEL   , TAM_CEL*2);
+  obs[1].setPosition(TAM_CEL*6 , TAM_CEL*2);
+  obs[2].setPosition(TAM_CEL*11, TAM_CEL*2);
+  obs[3].setPosition(TAM_CEL*14, TAM_CEL*2);
+  obs[4].setPosition(TAM_CEL   , TAM_CEL*5);
+  obs[5].setPosition(TAM_CEL*4 , TAM_CEL*5);
+  obs[6].setPosition(TAM_CEL*8 , TAM_CEL*5);
+  obs[7].setPosition(TAM_CEL*4 , TAM_CEL*7);
+  obs[8].setPosition(TAM_CEL   , TAM_CEL*8);
+  obs[9].setPosition(TAM_CEL   , TAM_CEL*10);
+  obs[10].setPosition(TAM_CEL*5, TAM_CEL*9);
+  obs[11].setPosition(TAM_CEL*9, TAM_CEL*9);
+  obs[12].setPosition(TAM_CEL*11, TAM_CEL*7);
+  obs[13].setPosition(TAM_CEL*13,  TAM_CEL*9);
+  
   //---------------------------------------------------
   
   //TEXTO
@@ -213,18 +226,6 @@ void taxi::render()
 {
   
   window.clear(sf::Color(29,29,29));
-  
-
-  window.draw(shape);
-  window.draw(txt_titulo);
-
-  
-  for (int i = 0; i < 15; ++i)
-  {
-    /* code */
-    window.draw(obs[i]);
-  }
-
  
     for (int j = 0; j < 20; ++j)
     {
@@ -233,6 +234,18 @@ void taxi::render()
       window.draw(lineas_h[j]);
       
     }
+  
+  for (int i = 0; i < 15; ++i)
+  {
+    /* code */
+    window.draw(obs[i]);
+  }
+
+  
+
+  window.draw(shape);
+  window.draw(txt_titulo);
+
 
 
   window.draw(s_home);
