@@ -15,6 +15,8 @@ class taxi
 
       bool dirr{false};
 
+      
+
       RenderWindow window;
       Event evee, evento_main;
 
@@ -26,9 +28,15 @@ class taxi
 
       CircleShape shape;
       //obstaculos
-      RectangleShape obs[8];
+      RectangleShape obs[15];
+      RectangleShape lineas_v[20];
+      RectangleShape lineas_h[20];
       int i=0;
       //variables de prueba
+
+      //texturas------
+      Texture t_home;
+      Sprite s_home;
 
       void inic();
 
@@ -42,7 +50,8 @@ class taxi
     public:
       taxi();
       void run();
-      void mover(int a,int b);
+      void mover_h(int a,int b);
+      void mover_v(int a,int b);
 
 };
 
