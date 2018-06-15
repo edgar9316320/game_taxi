@@ -1,5 +1,4 @@
 #include <iostream>
-#include <graphalgorithms.H>
 #include "taxi.h"
 
 using namespace Designar;
@@ -7,10 +6,11 @@ using namespace Designar;
 using namespace sf;
 using namespace std;
 
-using mgra = Digraph<RectangleShape, Text>;
+//using mgra = Digraph<RectangleShape, Text>;
 
 const int TAM_HOR = 800, TAM_VER = 600;
 const int VEL_BALL = 8;
+const Color c_obs(255, 56, 25);//anaranjado
 
 
 const int TAM_CEL = 50;
@@ -35,24 +35,27 @@ void taxi::inic()
   window.setVerticalSyncEnabled(true);
 //---------------------------------------------------------
    //IMAGENES------------------------------------------
-   if (!t_home.loadFromFile("imagenes/home.png")   )
+   if (!t_home.loadFromFile("imagenes/home.png") ||  !t_obs_1.loadFromFile("imagenes/obs_1.png"))
     {
       // error...
       //return 1;
       std::cout << "error" << '\n';
     }
-  s_home.setTexture(t_home);
+  /*s_home.setTexture(t_home);
   s_home.setPosition(55,105);
   s_home.setScale(0.3,0.3);
   s_home.setColor(Color(209, 198, 196));
-
-
+  */
+  s_obs_1.setTexture(t_obs_1);
+  s_obs_1.setPosition(50,100);
+  //s_home.setScale(0.3,0.3);
+  //s_home.setColor(Color(209, 198, 196));
 
 //-----------------------------------------------------------
 //
   shape.setRadius(10);
   shape.setPosition(10, 50);
-  shape.setFillColor(Color(255, 56, 25));
+  shape.setFillColor(c_obs);
   // linea de afuera de la pelota
   shape.setOutlineThickness(10);
   shape.setOutlineColor(Color(144, 148, 151,80));
@@ -80,22 +83,11 @@ void taxi::inic()
    
   //OBSTACULOS-----------------------------
   //colores
-  obs[0].setFillColor(Color(255, 56, 25));
-  obs[1].setFillColor(Color(255, 56, 25));
-  obs[2].setFillColor(Color(255, 56, 25));
-  obs[3].setFillColor(Color(255, 56, 25));
-  obs[4].setFillColor(Color(255, 56, 25));
-  obs[5].setFillColor(Color(255, 56, 25));
-  obs[6].setFillColor(Color(255, 56, 25));
-  obs[7].setFillColor(Color(255, 56, 25));
-  obs[8].setFillColor(Color(255, 56, 25));
-  obs[9].setFillColor(Color(255, 56, 25));
-  obs[10].setFillColor(Color(255, 56, 25));
-  obs[11].setFillColor(Color(255, 56, 25));
-  obs[12].setFillColor(Color(255, 56, 25));
-  obs[13].setFillColor(Color(255, 56, 25));
-
-
+  for (int i = 0; i < 14; ++i)
+  {
+      obs[i].setFillColor(c_obs);
+    
+  }
   //tamaños                X    Y
   obs[0].setSize(Vector2f(200, 100));
   obs[1].setSize(Vector2f(200, 100));
@@ -106,7 +98,6 @@ void taxi::inic()
   obs[6].setSize(Vector2f(100, 150));
   obs[7].setSize(Vector2f(200, 50));
   obs[8].setSize(Vector2f(50, 50));
-
   obs[9].setSize(Vector2f(150, 100));
   obs[10].setSize(Vector2f(150, 100));
   obs[11].setSize(Vector2f(150, 100));
@@ -115,32 +106,69 @@ void taxi::inic()
 
 
   //Posiciones          X           Y
-  obs[0].setPosition(TAM_CEL   , TAM_CEL*2);
-  obs[1].setPosition(TAM_CEL*6 , TAM_CEL*2);
-  obs[2].setPosition(TAM_CEL*11, TAM_CEL*2);
-  obs[3].setPosition(TAM_CEL*14, TAM_CEL*2);
-  obs[4].setPosition(TAM_CEL   , TAM_CEL*5);
-  obs[5].setPosition(TAM_CEL*4 , TAM_CEL*5);
-  obs[6].setPosition(TAM_CEL*8 , TAM_CEL*5);
-  obs[7].setPosition(TAM_CEL*4 , TAM_CEL*7);
-  obs[8].setPosition(TAM_CEL   , TAM_CEL*8);
-  obs[9].setPosition(TAM_CEL   , TAM_CEL*10);
-  obs[10].setPosition(TAM_CEL*5, TAM_CEL*9);
-  obs[11].setPosition(TAM_CEL*9, TAM_CEL*9);
+  obs[0].setPosition(TAM_CEL    , TAM_CEL*2);
+  obs[1].setPosition(TAM_CEL*6  , TAM_CEL*2);
+  obs[2].setPosition(TAM_CEL*11 , TAM_CEL*2);
+  obs[3].setPosition(TAM_CEL*14 , TAM_CEL*2);
+  obs[4].setPosition(TAM_CEL    , TAM_CEL*5);
+  obs[5].setPosition(TAM_CEL*4  , TAM_CEL*5);
+  obs[6].setPosition(TAM_CEL*8  , TAM_CEL*5);
+  obs[7].setPosition(TAM_CEL*4  , TAM_CEL*7);
+  obs[8].setPosition(TAM_CEL    , TAM_CEL*8);
+  obs[9].setPosition(TAM_CEL    , TAM_CEL*10);
+  obs[10].setPosition(TAM_CEL*5 , TAM_CEL*9);
+  obs[11].setPosition(TAM_CEL*9 , TAM_CEL*9);
   obs[12].setPosition(TAM_CEL*11, TAM_CEL*7);
   obs[13].setPosition(TAM_CEL*13,  TAM_CEL*9);
   
   //---------------------------------------------------
+  //Elementos del grafo------------------------------
+  //tamaños
+  for (int i = 0; i < 20; ++i)
+  {
+    g_paradas[i].setSize(Vector2f(TAM_CEL,TAM_CEL));
+    g_paradas[i].setFillColor(Color(255, 56, 25,30));
+    
+  }
+  //Posiciones               X           Y
+  g_paradas[0].setPosition(0        ,TAM_CEL);
+  g_paradas[1].setPosition(TAM_CEL*5,TAM_CEL);
+  g_paradas[2].setPosition(TAM_CEL*10,TAM_CEL);
+  g_paradas[3].setPosition(TAM_CEL*13,TAM_CEL);
+  g_paradas[4].setPosition(TAM_CEL*15,TAM_CEL);
+
+  g_paradas[5].setPosition(0,TAM_CEL*4);
+  g_paradas[6].setPosition(TAM_CEL*3,TAM_CEL*4);
+  g_paradas[7].setPosition(TAM_CEL*7,TAM_CEL*4);
   
+  g_paradas[8].setPosition(TAM_CEL*10,TAM_CEL*6);
+  g_paradas[9].setPosition(TAM_CEL*15,TAM_CEL*6);
+  g_paradas[10].setPosition(TAM_CEL*2,TAM_CEL*8);
+  g_paradas[11].setPosition(TAM_CEL*8,TAM_CEL*8);
+  g_paradas[12].setPosition(TAM_CEL*12,TAM_CEL*8);
+
+  g_paradas[13].setPosition(TAM_CEL*0,TAM_CEL*11);
+  g_paradas[14].setPosition(TAM_CEL*4,TAM_CEL*11);
+  g_paradas[15].setPosition(TAM_CEL*8,TAM_CEL*11);
+  g_paradas[16].setPosition(TAM_CEL*12,TAM_CEL*11);
+  g_paradas[17].setPosition(TAM_CEL*15,TAM_CEL*11);
+  //---------------------------------------------------
+
+
+
   //TEXTO
   fuente1.loadFromFile("Fuentes/seguili.ttf");
   //variables de texto
   txt_titulo.setFont(fuente1);
   txt_titulo.setString("Life:");
   txt_titulo.setPosition(500,15);
-  txt_titulo.setColor(Color(255, 56, 25));
+  txt_titulo.setColor(c_obs);
 
- 
+  
+  txt_titulo.setFont(fuente1);
+  txt_titulo.setString("EDGE");
+  txt_titulo.setPosition(TAM_CEL,15);
+  txt_titulo.setColor(c_obs);
 
 
 }
@@ -243,12 +271,17 @@ void taxi::render()
 
   
 
-  window.draw(shape);
   window.draw(txt_titulo);
 
 
 
-  window.draw(s_home);
+  window.draw(s_obs_1);
+  for (int i = 0; i < 20; ++i)
+  {
+    window.draw(g_paradas[i]);
+    
+  }
+  window.draw(shape);
   
     window.display();
 

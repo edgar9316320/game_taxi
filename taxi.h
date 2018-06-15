@@ -7,7 +7,14 @@
 #include <string.h>
 #include <random>
 
+#include <graphalgorithms.H>
+
+using namespace Designar;
+
 using namespace sf;
+
+using mgra = Digraph<RectangleShape, Text>;
+
 
 class taxi
 {
@@ -32,11 +39,16 @@ class taxi
       RectangleShape lineas_v[20];
       RectangleShape lineas_h[20];
       int i=0;
-      //variables de prueba
+      //grafo
+
+      mgra grafo;
+      RectangleShape g_paradas[20];
+      Text g_des[15];
+
 
       //texturas------
-      Texture t_home;
-      Sprite s_home;
+      Texture t_home, t_obs_1;
+      Sprite s_home, s_obs_1;
 
       void inic();
 
