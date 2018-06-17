@@ -367,7 +367,10 @@ void taxi::update()
                 g_des[j].setPosition(Vector2f(0,0)); 
                 
                 }
-
+                if (grafo.is_digraph())
+                {
+                  cout << "es un digrafo"<<endl;
+                }
                  
                  if (num1 > num2)
                  {

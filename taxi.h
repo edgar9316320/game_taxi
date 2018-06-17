@@ -15,7 +15,7 @@ using namespace sf;
 using namespace std;
 
 using nodog = tuple<RectangleShape, int>;
-using mgra = Digraph<nodog,lint_t>;
+using mgra = Graph<nodog,lint_t>;
 
 
 class taxi
