@@ -12,17 +12,20 @@
 using namespace Designar;
 
 using namespace sf;
+using namespace std;
 
-using mgra = Digraph<RectangleShape>;
+using nodog = tuple<RectangleShape, int>;
+using mgra = Digraph<nodog,lint_t>;
 
 
 class taxi
 {
     private:
 
-      bool dirr{false};
+      bool dirr{false}, reso{true};
 
-      
+       String ncamino;
+       Path<mgra> path;
 
       RenderWindow window;
       Event evee, evento_main;
@@ -31,22 +34,32 @@ class taxi
       int fps;
       //variables de TEXTO
       Font fuente1;
-      Text txt_titulo;
+      Text txt_titulo, txt_camino;
+
 
       CircleShape shape;
       //obstaculos
       RectangleShape obs[15];
       RectangleShape lineas_v[20];
       RectangleShape lineas_h[20];
+
+
+
       int i=0;
       //grafo
 
-      mgra grafo;
+      mgra grafo, auxgraf;
       mgra::Node * gn[20];
+      int ii=0;
 
-      RectangleShape g_paradas[20];
+      RectangleShape g_paradas[20], aux[20];
+      nodog auxg[20];
       Text g_des[20];
 
+      int na = 0;
+
+
+    bool vari{false};
 
       //texturas------
       Texture t_home, t_obs_1;
@@ -60,6 +73,8 @@ class taxi
 
       void cleared();
       
+
+      int u = 0;
 
     public:
       taxi();

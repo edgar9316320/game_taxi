@@ -122,6 +122,9 @@ void taxi::inic()
   obs[13].setPosition(TAM_CEL*13,  TAM_CEL*9);
   
   //---------------------------------------------------
+ 
+
+
   //Elementos del grafo------------------------------
   //tamaños
   for (int i = 0; i < 20; ++i)
@@ -166,57 +169,66 @@ void taxi::inic()
   for (int i = 0; i < 20; ++i)
   {
     /* code */
-     gn[i] = grafo.insert_node(g_paradas[i]);
+     gn[i] = grafo.insert_node(make_tuple( g_paradas[i], i));
   }
 
    //arcos del primer nodo
-    grafo.insert_arc(gn[0], gn[1]);
-    grafo.insert_arc(gn[0], gn[6]);
+    grafo.insert_arc(gn[0], gn[1], 4);
+    grafo.insert_arc(gn[0], gn[6], 2);
     //arcos del segundo nodo
-    grafo.insert_arc(gn[1], gn[2]);
-    grafo.insert_arc(gn[1], gn[6]);
-    grafo.insert_arc(gn[1], gn[7]);
+    grafo.insert_arc(gn[1], gn[2], 4);
+    grafo.insert_arc(gn[1], gn[6], 4);
+    grafo.insert_arc(gn[1], gn[7]), 4;
     //arcos del tercer nodo
-    grafo.insert_arc(gn[2], gn[3]);
-    grafo.insert_arc(gn[2], gn[7]);
-    grafo.insert_arc(gn[2], gn[8]);
+    grafo.insert_arc(gn[2], gn[3], 2);
+    grafo.insert_arc(gn[2], gn[7], 5);
+    grafo.insert_arc(gn[2], gn[8], 4);
     //arcos del cuarto nodo
-    grafo.insert_arc(gn[3], gn[4]);
-    grafo.insert_arc(gn[3], gn[8]);
-    grafo.insert_arc(gn[3], gn[9]);
+    grafo.insert_arc(gn[3], gn[4], 1);
+    grafo.insert_arc(gn[3], gn[8], 7);
+    grafo.insert_arc(gn[3], gn[9], 6);
     //arcos del quinto nodo
-    grafo.insert_arc(gn[4], gn[9]);
+    grafo.insert_arc(gn[4], gn[9], 4);
     //arcos del sexto nodo
-    grafo.insert_arc(gn[5], gn[6]);
-    grafo.insert_arc(gn[5], gn[13]);
-    grafo.insert_arc(gn[5], gn[10]);
+    grafo.insert_arc(gn[5], gn[6], 2);
+    grafo.insert_arc(gn[5], gn[13], 6);
+    grafo.insert_arc(gn[5], gn[10], 7);
 
-    grafo.insert_arc(gn[6], gn[7]);
-    grafo.insert_arc(gn[6], gn[10]);
+    grafo.insert_arc(gn[6], gn[7], 3);
+    grafo.insert_arc(gn[6], gn[10], 4);
 
-    grafo.insert_arc(gn[7], gn[8]);
+    grafo.insert_arc(gn[7], gn[8], 4);
 
-    grafo.insert_arc(gn[8], gn[9]);
-    grafo.insert_arc(gn[8], gn[11]);
-    grafo.insert_arc(gn[8], gn[12]);
+    grafo.insert_arc(gn[8], gn[9], 4);
+    grafo.insert_arc(gn[8], gn[11], 3);
+    grafo.insert_arc(gn[8], gn[12], 3);
 
-    grafo.insert_arc(gn[9], gn[12]);
-    grafo.insert_arc(gn[9], gn[17]);
+    grafo.insert_arc(gn[9], gn[12], 4);
+    grafo.insert_arc(gn[9], gn[17], 4);
 
-    grafo.insert_arc(gn[10], gn[11]);
-    grafo.insert_arc(gn[10], gn[13]);
-    grafo.insert_arc(gn[10], gn[14]);
+    grafo.insert_arc(gn[10], gn[11], 5);
+    grafo.insert_arc(gn[10], gn[13], 4);
+    grafo.insert_arc(gn[10], gn[14], 4);
 
-    grafo.insert_arc(gn[11], gn[12]);
-    grafo.insert_arc(gn[11], gn[15]);
+    grafo.insert_arc(gn[11], gn[12], 3);
+    grafo.insert_arc(gn[11], gn[15], 2);
 
-    grafo.insert_arc(gn[12], gn[16]);
-    grafo.insert_arc(gn[12], gn[17]);
+    grafo.insert_arc(gn[12], gn[16], 2);
+    grafo.insert_arc(gn[12], gn[17], 5);
 
-    grafo.insert_arc(gn[14], gn[15]);
-    grafo.insert_arc(gn[15], gn[16]);
-    grafo.insert_arc(gn[16], gn[17]);
+    grafo.insert_arc(gn[14], gn[15], 3);
+    grafo.insert_arc(gn[15], gn[16], 3);
+    grafo.insert_arc(gn[16], gn[17], 2);
 
+   
+
+ 
+
+
+
+    txt_camino.setString(ncamino);
+    txt_camino.setPosition(TAM_CEL*4,15);
+    txt_camino.setColor(c_obs);
   //---------------------------------------------------
 
 
@@ -235,12 +247,20 @@ void taxi::inic()
   txt_titulo.setPosition(TAM_CEL,15);
   txt_titulo.setColor(c_obs);
 
+  for (int i = 0; i < 20; ++i)
+  {
+    g_des[i].setFont(fuente1);
+    g_des[i].setString(to_string(i));
+    
+  }
+
 
 }
 
 
 void taxi::eventos()
 {
+    
     while (window.pollEvent(evee))
     {
       if (evee.type == Event::Closed)
@@ -260,6 +280,39 @@ void taxi::eventos()
               
        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
           mover_v(i, -VEL_BALL);
+
+       
+
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+         {
+
+          vari = true;
+           
+
+
+         } 
+
+       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+         {
+            if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
+                )
+            {
+              shape.move(0, 0);
+            }else
+            {
+
+              shape.move(i, VEL_BALL);
+            }
+
+
+         } 
+          
+
+
             
     }
     
@@ -307,8 +360,81 @@ void taxi::update()
 {
 
   //---------------------------------------------------------
+        //Inicializar variables aleatorias
+      //numeros aleatorios
+  if (vari)
+  {
 
-   
+
+      random_device rd;
+      mt19937 gen(rd());
+      uniform_int_distribution<> dis(0, 15);
+
+      random_device rd1;
+      mt19937 gen1(rd());
+      uniform_int_distribution<> dis1(0, 15);
+      
+            if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
+                shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
+                )
+            {
+              shape.move(0, 0);
+            }else
+            {
+                 int ayu, num1 = dis(gen);
+                 int num2 = dis1(gen1);
+                for (int j = 0; j < 10; ++j)
+                {
+        
+                g_des[j].setPosition(Vector2f(0,0)); 
+                
+                }
+
+                 
+                 if (num1 > num2)
+                 {
+                  ayu = num1;
+                  num1 = num2;
+                  num2 = ayu; 
+                 
+                 }
+                 cout << "el numero A es: " << num1 << endl;
+                 cout << "el numero B es: " << num2 << endl;
+
+                path = breadth_first_search_path(grafo, gn[num1], gn[num2]);
+
+                shape.move(VEL_BALL, i);
+                  //Path<mgra> path = breadth_first_search_path(grafo, gn[1], gn[11]);
+
+                  path.for_each([&] (auto c, auto r)
+                    {
+                      //cout << c->get_info() << " ";
+                        //get<0>(auxg[ii]) = c->get_info();
+                      //get<1>(auxg[ii]) = ii;
+                        //window.draw(c->get_info());
+                      //cout << "nodo: " <<  get<1>(c->get_info()) <<endl;
+                        aux[ii] = get<0>(c->get_info());
+                        ii++;               
+
+                         if (r != nullptr)
+                        {
+                        cout << "arco:  " << r->get_info()<< endl; 
+                        //aux[ii] = r->get_info();
+                        //ii++;               
+                        
+
+                        }
+
+                    });
+
+             }
+             vari = false;
+          
+             ii =0;
+    }
 
   
 }
@@ -318,6 +444,7 @@ void taxi::update()
 void taxi::render()
 {
   
+
   window.clear(sf::Color(29,29,29));
  
     for (int j = 0; j < 20; ++j)
@@ -328,12 +455,29 @@ void taxi::render()
       window.draw(obs[j]);
       window.draw(g_paradas[j]);
       window.draw(g_des[j]);
+      window.draw(aux[j]);
+
       
     }
-  
+    
+      for (int j = 0; j < 10; ++j)
+      {
+        
+        g_des[j].setPosition(aux[j].getPosition()); 
+        window.draw(g_des[j]);
+      }
+      
+    
+
+
   window.draw(txt_titulo);
+  window.draw(txt_camino);
   window.draw(s_obs_1);
   window.draw(shape);
+
+  
+
+
 
   window.display();
 
