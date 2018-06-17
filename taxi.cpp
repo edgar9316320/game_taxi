@@ -345,11 +345,11 @@ void taxi::update()
 
       random_device rd;
       mt19937 gen(rd());
-      uniform_int_distribution<> dis(0, 15);
+      uniform_int_distribution<> dis(0, 17);
 
       random_device rd1;
       mt19937 gen1(rd());
-      uniform_int_distribution<> dis1(0, 15);
+      uniform_int_distribution<> dis1(0, 17);
       
             if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
                 shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
@@ -369,42 +369,31 @@ void taxi::update()
                 g_des[j].setPosition(Vector2f(0,0)); 
                 
                 }
-                if (grafo.is_digraph())
+                         
+                for (int i = 0; i < 18; ++i)
                 {
-                  cout << "es un digrafo"<<endl;
+                  if ( shape.getGlobalBounds().intersects(g_paradas[i].getGlobalBounds()) )
+                  {
+                      num1 = i;
+                  }
                 }
-                 
-                 if (num1 > num2)
-                 {
-                  ayu = num1;
-                  num1 = num2;
-                  num2 = ayu; 
-                 
-                 }
+
                  cout << "el numero A es: " << num1 << endl;
                  cout << "el numero B es: " << num2 << endl;
 
                 path = breadth_first_search_path(grafo, gn[num1], gn[num2]);
 
-                shape.move(VEL_BALL, i);
-                  //Path<mgra> path = breadth_first_search_path(grafo, gn[1], gn[11]);
-
-                  path.for_each([&] (auto c, auto r)
+                path.for_each([&] (auto c, auto r)
                     {
-                      //cout << c->get_info() << " ";
-                        //get<0>(auxg[ii]) = c->get_info();
-                      //get<1>(auxg[ii]) = ii;
-                        //window.draw(c->get_info());
-                      //cout << "nodo: " <<  get<1>(c->get_info()) <<endl;
+                    
+                        cout << "nodo:  " << get<1>(c->get_info())<< endl; 
                         aux[ii] = get<0>(c->get_info());
                         ii++;               
 
                          if (r != nullptr)
                         {
                         cout << "arco:  " << r->get_info()<< endl; 
-                        //aux[ii] = r->get_info();
-                        //ii++;               
-                        
+                                     
 
                         }
 
@@ -413,7 +402,7 @@ void taxi::update()
              }
              vari = false;
           
-             ii =0;
+             
     }
 
   
@@ -440,13 +429,13 @@ void taxi::render()
       
     }
     
-      for (int j = 0; j < 10; ++j)
+      for (int j = 0; j < ii; ++j)
       {
         
         g_des[j].setPosition(aux[j].getPosition()); 
         window.draw(g_des[j]);
       }
-      
+      ii =0;
     
 
 
