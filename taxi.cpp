@@ -174,7 +174,7 @@ void taxi::inic()
 
    //arcos del primer nodo
     grafo.insert_arc(gn[0], gn[1], 4);
-    grafo.insert_arc(gn[0], gn[6], 2);
+    grafo.insert_arc(gn[0], gn[5], 2);
     //arcos del segundo nodo
     grafo.insert_arc(gn[1], gn[2], 4);
     grafo.insert_arc(gn[1], gn[6], 4);
@@ -281,36 +281,11 @@ void taxi::eventos()
        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
           mover_v(i, -VEL_BALL);
 
-       
-
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-         {
-
-          vari = true;
-           
-
-
-         } 
-
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-         {
-            if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
-                )
-            {
-              shape.move(0, 0);
-            }else
-            {
-
-              shape.move(i, VEL_BALL);
-            }
-
-
-         } 
-          
+       if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+          {
+              // left mouse button is pressed: shoot
+              vari = true;
+          }
 
 
             
