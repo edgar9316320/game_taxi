@@ -83,7 +83,7 @@ void taxi::inic()
    
   //OBSTACULOS-----------------------------
   //colores
-  for (int i = 0; i < 14; ++i)
+  for (int i = 0; i < 15; ++i)
   {
       obs[i].setFillColor(c_obs);
     
@@ -103,6 +103,7 @@ void taxi::inic()
   obs[11].setSize(Vector2f(150, 100));
   obs[12].setSize(Vector2f(200, 50));
   obs[13].setSize(Vector2f(100, 100));
+  obs[14].setSize(Vector2f(50, 50));
 
 
   //Posiciones          X           Y
@@ -120,6 +121,7 @@ void taxi::inic()
   obs[11].setPosition(TAM_CEL*9 , TAM_CEL*9);
   obs[12].setPosition(TAM_CEL*11, TAM_CEL*7);
   obs[13].setPosition(TAM_CEL*13,  TAM_CEL*9);
+  obs[14].setPosition(TAM_CEL*3,  TAM_CEL*9);
   
   //---------------------------------------------------
  
@@ -146,7 +148,7 @@ void taxi::inic()
   
   g_paradas[8].setPosition(TAM_CEL*10,TAM_CEL*6);
   g_paradas[9].setPosition(TAM_CEL*15,TAM_CEL*6);
-  g_paradas[10].setPosition(TAM_CEL*2,TAM_CEL*8);
+  g_paradas[10].setPosition(TAM_CEL*3,TAM_CEL*8);
   g_paradas[11].setPosition(TAM_CEL*8,TAM_CEL*8);
   g_paradas[12].setPosition(TAM_CEL*12,TAM_CEL*8);
 
@@ -192,10 +194,10 @@ void taxi::inic()
     //arcos del sexto nodo
     grafo.insert_arc(gn[5], gn[6], 2);
     grafo.insert_arc(gn[5], gn[13], 6);
-    grafo.insert_arc(gn[5], gn[10], 7);
+    grafo.insert_arc(gn[5], gn[10], 8);
 
     grafo.insert_arc(gn[6], gn[7], 3);
-    grafo.insert_arc(gn[6], gn[10], 4);
+    grafo.insert_arc(gn[6], gn[10], 3);
 
     grafo.insert_arc(gn[7], gn[8], 4);
 
@@ -206,9 +208,9 @@ void taxi::inic()
     grafo.insert_arc(gn[9], gn[12], 4);
     grafo.insert_arc(gn[9], gn[17], 4);
 
-    grafo.insert_arc(gn[10], gn[11], 5);
-    grafo.insert_arc(gn[10], gn[13], 4);
-    grafo.insert_arc(gn[10], gn[14], 4);
+    grafo.insert_arc(gn[10], gn[11], 4);
+    grafo.insert_arc(gn[10], gn[13], 5);
+    grafo.insert_arc(gn[10], gn[14], 3);
 
     grafo.insert_arc(gn[11], gn[12], 3);
     grafo.insert_arc(gn[11], gn[15], 2);
