@@ -45,7 +45,7 @@ class taxi
 
 
 
-      int i=0;
+      int inter=0;
       //grafo
 
       mgra grafo, auxgraf;
@@ -62,8 +62,8 @@ class taxi
     bool vari{false};
 
       //texturas------
-      Texture t_home, t_obs_1;
-      Sprite s_home, s_obs_1;
+      Texture t_home, t_obs_1, t_pasajero, t_destino;
+      Sprite s_home, s_obs_1, s_pasajero, s_destino;
 
       void inic();
 
@@ -74,8 +74,8 @@ class taxi
       void cleared();
       
 
-      int u = 0;
-
+      int u = 0, otra=0;
+        int grilla[12][16];
     public:
       taxi();
       void run();

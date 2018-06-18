@@ -9,7 +9,7 @@ using namespace std;
 //using mgra = Digraph<RectangleShape, Text>;
 
 const int TAM_HOR = 800, TAM_VER = 600;
-const int VEL_BALL = 8;
+const int VEL_BALL = 5;
 const Color c_obs(255, 56, 25);//anaranjado
 
 
@@ -34,8 +34,27 @@ void taxi::inic()
   //Para que parpadee lo menos posible
   window.setVerticalSyncEnabled(true);
 //---------------------------------------------------------
+
+ 
+
+   for (int i = 0; i < 12; i++)
+    {
+        for (int j = 0; j < 16; j++)
+        {
+            grilla[0][j] = 1;
+            //grilla[i][j] += TAM_CEL; 
+
+            cout << grilla[i][j] << " || ";
+        }
+        cout << endl;
+    }
+
+
+
+
    //IMAGENES------------------------------------------
-   if (!t_home.loadFromFile("imagenes/home.png") ||  !t_obs_1.loadFromFile("imagenes/obs_1.png"))
+   if (!t_home.loadFromFile("imagenes/home.png") ||  !t_obs_1.loadFromFile("imagenes/obs_1.png") ||
+       !t_destino.loadFromFile("imagenes/destino_32.png")  || !t_pasajero.loadFromFile("imagenes/user_32.png"))
     {
       // error...
       //return 1;
@@ -46,6 +65,11 @@ void taxi::inic()
   s_home.setScale(0.3,0.3);
   s_home.setColor(Color(209, 198, 196));
   */
+  s_pasajero.setTexture(t_pasajero);
+  s_destino.setTexture(t_destino);
+  
+  
+  
   s_obs_1.setTexture(t_obs_1);
   s_obs_1.setPosition(50,100);
   //s_home.setScale(0.3,0.3);
@@ -57,7 +81,7 @@ void taxi::inic()
   shape.setPosition(10, 50);
   shape.setFillColor(c_obs);
   // linea de afuera de la pelota
-  shape.setOutlineThickness(10);
+  shape.setOutlineThickness(5);
   shape.setOutlineColor(Color(144, 148, 151,80));
   int j=0, u = 0;
 
@@ -253,6 +277,7 @@ void taxi::inic()
   {
     g_des[i].setFont(fuente1);
     g_des[i].setString(to_string(i));
+    g_des[i].setFillColor(Color(160, 160, 160));
     
   }
 
@@ -269,68 +294,46 @@ void taxi::eventos()
           isPlay = false;
 
 
+      if (Keyboard::isKeyPressed(sf::Keyboard::Left) && Keyboard::isKeyPressed(sf::Keyboard::Up)   ||
+          Keyboard::isKeyPressed(sf::Keyboard::Left) && Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+          Keyboard::isKeyPressed(sf::Keyboard::Right) && Keyboard::isKeyPressed(sf::Keyboard::Up)  ||
+          Keyboard::isKeyPressed(sf::Keyboard::Right) && Keyboard::isKeyPressed(sf::Keyboard::Down)  )
+      {
+        shape.move(0,0);
+        
+      }else
+      {
+          for (int i = 0; i < 18; ++i)
+            {
+                  if ( shape.getGlobalBounds().intersects(obs[i].getGlobalBounds()) )
+                  {
+                      shape.setPosition(TAM_CEL*5, 0);
+                  }
+            }
 
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-          mover_h(-VEL_BALL,i);
-                 
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-          mover_h(VEL_BALL, i);
-              
-      
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-          mover_v(i, VEL_BALL);
-              
-       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-          mover_v(i, -VEL_BALL);
+        if (Keyboard::isKeyPressed(sf::Keyboard::Left))
+           shape.move(-VEL_BALL,inter);
+          
+        if (Keyboard::isKeyPressed(sf::Keyboard::Right))
+           shape.move(VEL_BALL,inter);
+                    
+        if (Keyboard::isKeyPressed(sf::Keyboard::Down))
+           shape.move(inter,VEL_BALL);
+                    
+        if (Keyboard::isKeyPressed(sf::Keyboard::Up))
+           shape.move(inter,-VEL_BALL);
+        
+        if (Mouse::isButtonPressed(sf::Mouse::Right))
+           vari = true;
+        
 
-       if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-          {
-              // left mouse button is pressed: shoot
-              vari = true;
-          }
-
-
+      }
             
     }
     
 }
 
-void taxi::mover_v(int a,int b)
-{
 
-    if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
-        )
-    {
-      shape.move(1, 0);
-    }else
-    {
-      shape.move(a, b);
-      
-    }
-
-}
-void taxi::mover_h(int a,int b)
-{
-
-    if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
-        shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
-        )
-    {
-      shape.move(0, 1);
-    }else
-    {
-      shape.move(a, b);
-      
-    }
-
-}
 
 
 void taxi::update()
@@ -351,16 +354,6 @@ void taxi::update()
       mt19937 gen1(rd());
       uniform_int_distribution<> dis1(0, 17);
       
-            if (shape.getGlobalBounds().intersects(obs[0].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[1].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[2].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[3].getGlobalBounds())||
-                shape.getGlobalBounds().intersects(obs[4].getGlobalBounds())
-                )
-            {
-              shape.move(0, 0);
-            }else
-            {
                  int ayu, num1 = dis(gen);
                  int num2 = dis1(gen1);
                 for (int j = 0; j < 10; ++j)
@@ -399,7 +392,8 @@ void taxi::update()
 
                     });
 
-             }
+
+             otra = ii;
              vari = false;
           
              
@@ -429,12 +423,21 @@ void taxi::render()
       
     }
     
+    
+      s_destino.setPosition(aux[otra-1].getPosition());
+      window.draw(s_destino);
       for (int j = 0; j < ii; ++j)
       {
         
         g_des[j].setPosition(aux[j].getPosition()); 
         window.draw(g_des[j]);
+        
+        
       }
+      
+      s_pasajero.setPosition(aux[0].getPosition());
+      window.draw(s_pasajero);
+      
       ii =0;
     
 
