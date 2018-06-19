@@ -55,7 +55,7 @@ void taxi::inic()
 //-----------------------------------------------------------
 //
   shape.setRadius(10);
-  shape.setPosition(TAM_CEL*7+40, 15);
+  shape.setPosition(TAM_CEL*7+40, 15); //ubicacion inicial de la pelota
   shape.setFillColor(c_obs);
   // linea de afuera de la pelota
   shape.setOutlineThickness(5);
@@ -229,11 +229,6 @@ void taxi::inic()
     grafo.insert_arc(gn[16], gn[17], 2);
 
    
-
- 
-
-
-
     txt_camino.setString(ncamino);
     txt_camino.setPosition(TAM_CEL*4,15);
     txt_camino.setColor(c_obs);
@@ -286,13 +281,11 @@ void taxi::eventos()
       }else
       {
           for (int i = 0; i < 17; ++i)
-            {
-                  if ( shape.getGlobalBounds().intersects(obs[i].getGlobalBounds()) )
-                  {
-                      shape.setPosition(TAM_CEL*7+15, 15);
+               if ( shape.getGlobalBounds().intersects(obs[i].getGlobalBounds()) )
+                      shape.setPosition(TAM_CEL*7+40, 15);
 
-                  }
-            }
+                  
+            
 
         if (Keyboard::isKeyPressed(sf::Keyboard::Left))
            shape.move(-VEL_BALL,inter);
@@ -382,6 +375,11 @@ void taxi::update()
              
     }
 
+    if ((shape.getPosition().x <= 0 || shape.getPosition().x >= TAM_CEL*15+25 || 
+         shape.getPosition().y <= 0 || shape.getPosition().y >= TAM_CEL*11+25) )
+      {
+        shape.setPosition(TAM_CEL*7+15, 15);
+      }
   
 }
 
