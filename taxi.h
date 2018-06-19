@@ -34,7 +34,7 @@ class taxi
       int fps;
       //variables de TEXTO
       Font fuente1;
-      Text txt_titulo, txt_camino;
+      Text txt_titulo, txt_camino, num_time, txt_d_gasolina;
 
 
       CircleShape shape;
@@ -62,8 +62,17 @@ class taxi
     bool vari{false};
 
       //texturas------
-      Texture t_home, t_obs_1, t_pasajero, t_destino;
-      Sprite s_home, s_obs_1, s_pasajero, s_destino;
+      Texture t_home, t_obs_1, t_pasajero, t_destino, t_gasolinera;
+      Sprite s_home, s_obs_1, s_pasajero, s_destino, s_gasolinera;
+
+      //variables de texto
+      int gasolina = 200;
+
+      //variables de tiempo
+      Clock reloj1, reloj2;
+      Time tiempo, tiempo2;
+
+      int timer,timer2, ti3=0;
 
       void inic();
 

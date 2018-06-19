@@ -36,8 +36,11 @@ void taxi::inic()
 //---------------------------------------------------------
 
   //IMAGENES------------------------------------------
-   if (!t_home.loadFromFile("imagenes/home.png") ||  !t_obs_1.loadFromFile("imagenes/obs_1.png") ||
-       !t_destino.loadFromFile("imagenes/destino_32.png")  || !t_pasajero.loadFromFile("imagenes/user_32.png"))
+   if (!t_home.loadFromFile("imagenes/home.png") ||  
+       !t_obs_1.loadFromFile("imagenes/obs_1.png") ||
+       !t_destino.loadFromFile("imagenes/destino_32.png") ||
+       !t_pasajero.loadFromFile("imagenes/user_32.png") ||
+       !t_gasolinera.loadFromFile("imagenes/gasolinera_32.png") )
     {
       // error...
       //return 1;
@@ -46,11 +49,16 @@ void taxi::inic()
 
   s_pasajero.setTexture(t_pasajero);
   s_destino.setTexture(t_destino);
+  s_gasolinera.setTexture(t_gasolinera);
 
   
   
   s_obs_1.setTexture(t_obs_1);
   s_obs_1.setPosition(50,100);
+
+  s_gasolinera.setPosition(TAM_CEL*14 + 10,TAM_CEL*5 + 10);
+  s_gasolinera.setColor(Color(50,50,50));
+
 
 //-----------------------------------------------------------
 //
@@ -70,11 +78,8 @@ void taxi::inic()
 
       lineas_v[i].setSize(Vector2f(1,600));
       lineas_v[i].setFillColor(Color(16,16,16));
-   
-  }
-   for (int i = 0; i < 20; ++i)
-  {
-    u += 50;
+
+      u += 50;
     
       lineas_h[i].setPosition(0,u);
       lineas_h[i].setFillColor(Color(16,16,16));
@@ -244,6 +249,14 @@ void taxi::inic()
   txt_titulo.setPosition(500,15);
   txt_titulo.setColor(c_obs);
 
+  num_time.setFont(fuente1);
+  num_time.setPosition(TAM_CEL*15, 5);
+
+
+  txt_d_gasolina.setFont(fuente1);
+  txt_d_gasolina.setPosition(TAM_CEL*13, 5);  
+  txt_d_gasolina.setColor(c_obs);
+  //txt_d_gasolina.setString(to_string(gasolina));
   
   txt_titulo.setFont(fuente1);
   txt_titulo.setString("EDGE");
@@ -314,6 +327,8 @@ void taxi::eventos()
 
 void taxi::update()
 {
+    //variable de tiempo
+    num_time.setString(to_string(timer));
 
   //---------------------------------------------------------
         //Inicializar variables aleatorias
@@ -330,56 +345,74 @@ void taxi::update()
       mt19937 gen1(rd());
       uniform_int_distribution<> dis1(0, 17);
       
-                 int num1 = dis(gen);
-                 int num2 = dis1(gen1);
-                for (int j = 0; j < 10; ++j)
-                {
-        
+             int num1 = dis(gen);
+             int num2 = dis1(gen1);
+            for (int j = 0; j < 10; ++j)
                 g_des[j].setPosition(Vector2f(0,0)); 
-                
-                }
-                         
-                for (int i = 0; i < 18; ++i)
-                {
-                  if ( shape.getGlobalBounds().intersects(g_paradas[i].getGlobalBounds()) )
+            
+            
+            for (int i = 0; i < 18; ++i)
+                if ( shape.getGlobalBounds().intersects(g_paradas[i].getGlobalBounds()) )
+                    num1 = i;//solicitar carrera desde el nodo en el que esta posicionado
+              
+            path = breadth_first_search_path(grafo, gn[num1], gn[num2]);
+
+            path.for_each([&] (auto c, auto r)
+              {
+              
+                  cout << "nodo:  " << get<1>(c->get_info())<< endl; 
+                  aux[ii] = get<0>(c->get_info());
+                  ii++;               
+
+                  if (r != nullptr)
                   {
-                      num1 = i;
+                      cout << "arco:  " << r->get_info()<< endl; 
+                               
+
                   }
-                }
 
-                 cout << "el numero A es: " << num1 << endl;
-                 cout << "el numero B es: " << num2 << endl;
-
-                path = breadth_first_search_path(grafo, gn[num1], gn[num2]);
-
-                path.for_each([&] (auto c, auto r)
-                    {
-                    
-                        cout << "nodo:  " << get<1>(c->get_info())<< endl; 
-                        aux[ii] = get<0>(c->get_info());
-                        ii++;               
-
-                         if (r != nullptr)
-                        {
-                        cout << "arco:  " << r->get_info()<< endl; 
-                                     
-
-                        }
-
-                    });
+              });
 
 
-             otra = ii;
-             vari = false;
+         otra = ii;
+         vari = false;
           
              
     }
 
     if ((shape.getPosition().x <= 0 || shape.getPosition().x >= TAM_CEL*15+25 || 
-         shape.getPosition().y <= 0 || shape.getPosition().y >= TAM_CEL*11+25) )
+         shape.getPosition().y <= 0 || shape.getPosition().y >= TAM_CEL*11+25) ) //limites de la ventana
       {
         shape.setPosition(TAM_CEL*7+15, 15);
       }
+    
+     //timer2 += tiempo.asSeconds();
+    ti3 += 1;
+    cout << "tempo 3: " << ti3 << endl;  
+    
+
+    if (shape.getGlobalBounds().intersects(s_gasolinera.getGlobalBounds()) )
+    {
+        if (gasolina < 200)
+        {
+          
+            gasolina++;
+       
+          
+        }
+        
+              
+    }else
+    {
+      if (ti3 > 15)
+        {
+        gasolina--;
+        ti3 = 0;
+         }
+    }
+    
+    txt_d_gasolina.setString(to_string(gasolina));
+
   
 }
 
@@ -399,19 +432,21 @@ void taxi::render()
       window.draw(g_paradas[j]);
       window.draw(obs[j]);
       window.draw(g_des[j]);
-      window.draw(aux[j]);
+      
+      //window.draw(aux[j]);
 
       
     }
     
+    path.for_each([&] (auto c, auto r) { window.draw(get<0>(c->get_info())); });
     
     
-      s_destino.setPosition(aux[otra-1].getPosition());
-      window.draw(s_destino);
+    s_destino.setPosition(aux[otra-1].getPosition() + Vector2f(10,8) );
+    window.draw(s_destino);
    
       
-      s_pasajero.setPosition(aux[0].getPosition());
-      window.draw(s_pasajero);
+    s_pasajero.setPosition(aux[0].getPosition() + Vector2f(7,7) );
+    window.draw(s_pasajero);
       
     
     if (Mouse::getPosition(window) == Vector2i(g_paradas[0].getPosition())) 
@@ -429,6 +464,7 @@ void taxi::render()
 
   window.draw(txt_camino);
   window.draw(s_obs_1);
+  window.draw(s_gasolinera);
 
   window.draw(shape);
 
@@ -436,6 +472,8 @@ void taxi::render()
   window.draw(obs[16]);
 
   window.draw(txt_titulo);
+  window.draw(num_time);
+  window.draw(txt_d_gasolina);
   
   ii =0;
 
@@ -461,17 +499,24 @@ void taxi::run()
 
       while (isPlay)
       {
-        //tiempo = reloj1.getElapsedTime();
+        tiempo = reloj1.getElapsedTime();
+        //tiempo2 = reloj2.getElapsedTime();
 
-        //if (tiempo.asSeconds() > (1/fps))
-        //{
-     
+        if (tiempo.asSeconds() > (1/fps))
+        {
+          timer =  tiempo.asSeconds();
+
+          //timer2 =  tiempo2.asSeconds();
+          
+
           eventos();
           update();
 
           render();
+
+          //reloj2.restart();
         
-        //}
+        }
 
       }
 
