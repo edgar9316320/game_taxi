@@ -73,6 +73,7 @@ class taxi
       Time tiempo, tiempo2;
 
       int timer,timer2, ti3=0;
+      bool semovio;
 
       void inic();
 

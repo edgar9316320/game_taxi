@@ -272,6 +272,8 @@ void taxi::inic()
   }
 
 
+
+
 }
 
 
@@ -314,7 +316,16 @@ void taxi::eventos()
         
         if (Mouse::isButtonPressed(sf::Mouse::Right))
            vari = true;
-        
+
+        if (Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+          Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+          Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+          Keyboard::isKeyPressed(sf::Keyboard::Down) )
+        {
+          semovio = true;
+        }
+
+       
 
       }
             
@@ -329,6 +340,11 @@ void taxi::update()
 {
     //variable de tiempo
     num_time.setString(to_string(timer));
+
+    if (semovio)
+    {
+      timer = tiempo.asSeconds();
+    }
 
   //---------------------------------------------------------
         //Inicializar variables aleatorias
@@ -386,7 +402,7 @@ void taxi::update()
         shape.setPosition(TAM_CEL*7+15, 15);
       }
     
-     //timer2 += tiempo.asSeconds();
+     //contador de la gasolina 
     ti3 += 1;
     cout << "tempo 3: " << ti3 << endl;  
     
@@ -394,14 +410,7 @@ void taxi::update()
     if (shape.getGlobalBounds().intersects(s_gasolinera.getGlobalBounds()) )
     {
         if (gasolina < 200)
-        {
-          
-            gasolina++;
-       
-          
-        }
-        
-              
+           gasolina++;
     }else
     {
       if (ti3 > 15)
@@ -504,7 +513,7 @@ void taxi::run()
 
         if (tiempo.asSeconds() > (1/fps))
         {
-          timer =  tiempo.asSeconds();
+          //timer =  tiempo.asSeconds();
 
           //timer2 =  tiempo2.asSeconds();
           
