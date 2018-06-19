@@ -35,24 +35,7 @@ void taxi::inic()
   window.setVerticalSyncEnabled(true);
 //---------------------------------------------------------
 
- 
-
-   for (int i = 0; i < 12; i++)
-    {
-        for (int j = 0; j < 16; j++)
-        {
-            grilla[0][j] = 1;
-            //grilla[i][j] += TAM_CEL; 
-
-            cout << grilla[i][j] << " || ";
-        }
-        cout << endl;
-    }
-
-
-
-
-   //IMAGENES------------------------------------------
+  //IMAGENES------------------------------------------
    if (!t_home.loadFromFile("imagenes/home.png") ||  !t_obs_1.loadFromFile("imagenes/obs_1.png") ||
        !t_destino.loadFromFile("imagenes/destino_32.png")  || !t_pasajero.loadFromFile("imagenes/user_32.png"))
     {
@@ -60,25 +43,19 @@ void taxi::inic()
       //return 1;
       std::cout << "error" << '\n';
     }
-  /*s_home.setTexture(t_home);
-  s_home.setPosition(55,105);
-  s_home.setScale(0.3,0.3);
-  s_home.setColor(Color(209, 198, 196));
-  */
+
   s_pasajero.setTexture(t_pasajero);
   s_destino.setTexture(t_destino);
-  
+
   
   
   s_obs_1.setTexture(t_obs_1);
   s_obs_1.setPosition(50,100);
-  //s_home.setScale(0.3,0.3);
-  //s_home.setColor(Color(209, 198, 196));
 
 //-----------------------------------------------------------
 //
   shape.setRadius(10);
-  shape.setPosition(10, 50);
+  shape.setPosition(TAM_CEL*7+40, 15);
   shape.setFillColor(c_obs);
   // linea de afuera de la pelota
   shape.setOutlineThickness(5);
@@ -128,7 +105,8 @@ void taxi::inic()
   obs[12].setSize(Vector2f(200, 50));
   obs[13].setSize(Vector2f(100, 100));
   obs[14].setSize(Vector2f(50, 50));
-
+  obs[15].setSize(Vector2f(TAM_CEL*7, TAM_CEL));
+  obs[16].setSize(Vector2f(TAM_CEL*7, TAM_CEL));
 
   //Posiciones          X           Y
   obs[0].setPosition(TAM_CEL    , TAM_CEL*2);
@@ -146,9 +124,13 @@ void taxi::inic()
   obs[12].setPosition(TAM_CEL*11, TAM_CEL*7);
   obs[13].setPosition(TAM_CEL*13,  TAM_CEL*9);
   obs[14].setPosition(TAM_CEL*3,  TAM_CEL*9);
-  
+  obs[15].setPosition(0, 0);
+  obs[16].setPosition(TAM_CEL*9, 0);
   //---------------------------------------------------
- 
+  
+  obs[15].setFillColor(Color(11,17,17));
+  obs[16].setFillColor(Color(11,17,17));
+  
 
 
   //Elementos del grafo------------------------------
@@ -204,7 +186,7 @@ void taxi::inic()
     //arcos del segundo nodo
     grafo.insert_arc(gn[1], gn[2], 4);
     grafo.insert_arc(gn[1], gn[6], 4);
-    grafo.insert_arc(gn[1], gn[7]), 4;
+    grafo.insert_arc(gn[1], gn[7], 4);
     //arcos del tercer nodo
     grafo.insert_arc(gn[2], gn[3], 2);
     grafo.insert_arc(gn[2], gn[7], 5);
@@ -303,11 +285,12 @@ void taxi::eventos()
         
       }else
       {
-          for (int i = 0; i < 18; ++i)
+          for (int i = 0; i < 17; ++i)
             {
                   if ( shape.getGlobalBounds().intersects(obs[i].getGlobalBounds()) )
                   {
-                      shape.setPosition(TAM_CEL*5, 0);
+                      shape.setPosition(TAM_CEL*7+15, 15);
+
                   }
             }
 
@@ -354,7 +337,7 @@ void taxi::update()
       mt19937 gen1(rd());
       uniform_int_distribution<> dis1(0, 17);
       
-                 int ayu, num1 = dis(gen);
+                 int num1 = dis(gen);
                  int num2 = dis1(gen1);
                 for (int j = 0; j < 10; ++j)
                 {
@@ -415,8 +398,8 @@ void taxi::render()
       /* code */
       window.draw(lineas_v[j]);
       window.draw(lineas_h[j]);
-      window.draw(obs[j]);
       window.draw(g_paradas[j]);
+      window.draw(obs[j]);
       window.draw(g_des[j]);
       window.draw(aux[j]);
 
@@ -424,9 +407,19 @@ void taxi::render()
     }
     
     
+    
       s_destino.setPosition(aux[otra-1].getPosition());
       window.draw(s_destino);
-      for (int j = 0; j < ii; ++j)
+   
+      
+      s_pasajero.setPosition(aux[0].getPosition());
+      window.draw(s_pasajero);
+      
+    
+    if (Mouse::getPosition(window) == Vector2i(g_paradas[0].getPosition())) 
+
+    {
+         for (int j = 0; j < ii; ++j)
       {
         
         g_des[j].setPosition(aux[j].getPosition()); 
@@ -434,20 +427,19 @@ void taxi::render()
         
         
       }
-      
-      s_pasajero.setPosition(aux[0].getPosition());
-      window.draw(s_pasajero);
-      
-      ii =0;
-    
+    }
 
-
-  window.draw(txt_titulo);
   window.draw(txt_camino);
   window.draw(s_obs_1);
+
   window.draw(shape);
 
+  window.draw(obs[15]);
+  window.draw(obs[16]);
+
+  window.draw(txt_titulo);
   
+  ii =0;
 
 
 

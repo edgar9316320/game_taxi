@@ -39,7 +39,7 @@ class taxi
 
       CircleShape shape;
       //obstaculos
-      RectangleShape obs[15];
+      RectangleShape obs[17];
       RectangleShape lineas_v[20];
       RectangleShape lineas_h[20];
 
@@ -75,7 +75,7 @@ class taxi
       
 
       int u = 0, otra=0;
-        int grilla[12][16];
+        
     public:
       taxi();
       void run();
