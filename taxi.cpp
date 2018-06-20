@@ -245,13 +245,27 @@ void taxi::inic()
   fuente1.loadFromFile("Fuentes/seguili.ttf");
   //variables de texto
   txt_titulo.setFont(fuente1);
+  txt_puntuacion.setFont(fuente1);
+  txt_costo.setFont(fuente1);
+
+  txt_costo.setString("CC$:");
+  txt_puntuacion.setString("DG$:");
+  txt_costo.setPosition(TAM_CEL*9+5,5);
+  txt_puntuacion.setPosition(TAM_CEL*4,5);
+
   txt_titulo.setString("Life:");
   txt_titulo.setPosition(500,15);
   txt_titulo.setColor(c_obs);
 
+  num_costo.setFont(fuente1);
+  num_costo.setPosition(TAM_CEL*11,5);
+  num_costo.setColor(c_obs);
+
   num_time.setFont(fuente1);
   num_time.setPosition(TAM_CEL*15, 5);
-
+  num_puntuacion.setFont(fuente1);
+  num_puntuacion.setColor(c_obs);
+  num_puntuacion.setPosition(TAM_CEL*6,5);
 
   txt_d_gasolina.setFont(fuente1);
   txt_d_gasolina.setPosition(TAM_CEL*13, 5);  
@@ -352,7 +366,7 @@ void taxi::update()
   if (vari)
   {
 
-
+      puntuacion = 0;
       random_device rd;
       mt19937 gen(rd());
       uniform_int_distribution<> dis(0, 17);
@@ -360,6 +374,8 @@ void taxi::update()
       random_device rd1;
       mt19937 gen1(rd());
       uniform_int_distribution<> dis1(0, 17);
+
+      s_pasajero.setColor(Color(250,250,250));
       
              int num1 = dis(gen);
              int num2 = dis1(gen1);
@@ -383,6 +399,8 @@ void taxi::update()
                   if (r != nullptr)
                   {
                       cout << "arco:  " << r->get_info()<< endl; 
+                      puntuacion = puntuacion + r->get_info();
+                      puntuacion_total = puntuacion_total + puntuacion;
                                
 
                   }
@@ -409,10 +427,12 @@ void taxi::update()
 
     if (shape.getGlobalBounds().intersects(s_gasolinera.getGlobalBounds()) )
     {
+      s_gasolinera.setColor(Color(150,150,150));
         if (gasolina < 200)
            gasolina++;
     }else
     {
+      s_gasolinera.setColor(Color(50,50,50));
       if (ti3 > 15)
         {
         gasolina--;
@@ -420,6 +440,8 @@ void taxi::update()
          }
     }
     
+    num_costo.setString(to_string(puntuacion));
+    num_puntuacion.setString(to_string(puntuacion_total));
     txt_d_gasolina.setString(to_string(gasolina));
 
   
@@ -438,8 +460,9 @@ void taxi::render()
       /* code */
       window.draw(lineas_v[j]);
       window.draw(lineas_h[j]);
-      window.draw(g_paradas[j]);
+      //window.draw(g_paradas[j]);
       window.draw(obs[j]);
+      
       window.draw(g_des[j]);
       
       //window.draw(aux[j]);
@@ -447,21 +470,38 @@ void taxi::render()
       
     }
     
-    path.for_each([&] (auto c, auto r) { window.draw(get<0>(c->get_info())); });
+    path.for_each([&] (auto c, auto r) { 
+        
+        //window.draw(get<0>(c->get_info())); 
+
+    });
     
+ 
+
     
-    s_destino.setPosition(aux[otra-1].getPosition() + Vector2f(10,8) );
-    window.draw(s_destino);
    
-      
-    s_pasajero.setPosition(aux[0].getPosition() + Vector2f(7,7) );
-    window.draw(s_pasajero);
-      
+    if ( shape.getGlobalBounds().intersects(aux[0].getGlobalBounds()) )
+          {
+             s_pasajero.setColor(Color(50,50,50)); 
+          }
+          else
+          {
+            
+            s_pasajero.setPosition(aux[0].getPosition() + Vector2f(7,7) );
+            window.draw(s_pasajero);
+            
+          }
+    if (s_pasajero.getColor() == Color(50,50,50))
+    {
+        s_destino.setPosition(aux[otra-1].getPosition() + Vector2f(10,8) );
+        window.draw(s_destino);
+              
+    }  
     
-    if (Mouse::getPosition(window) == Vector2i(g_paradas[0].getPosition())) 
+    if (Mouse::getPosition(window).x <= TAM_CEL*2 && Mouse::getPosition(window).y <= TAM_CEL*2)
 
     {
-         for (int j = 0; j < ii; ++j)
+      for (int j = 0; j < ii; ++j)
       {
         
         g_des[j].setPosition(aux[j].getPosition()); 
@@ -482,7 +522,11 @@ void taxi::render()
 
   window.draw(txt_titulo);
   window.draw(num_time);
+  window.draw(num_puntuacion);
   window.draw(txt_d_gasolina);
+  window.draw(txt_puntuacion);
+  window.draw(txt_costo);
+  window.draw(num_costo);
   
   ii =0;
 

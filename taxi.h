@@ -34,8 +34,8 @@ class taxi
       int fps;
       //variables de TEXTO
       Font fuente1;
-      Text txt_titulo, txt_camino, num_time, txt_d_gasolina;
-
+      Text txt_titulo, txt_camino, num_time, txt_d_gasolina, txt_puntuacion,num_puntuacion, txt_costo,num_costo;
+      int puntuacion, puntuacion_total=0;
 
       CircleShape shape;
       //obstaculos
