@@ -366,8 +366,11 @@ void taxi::update()
     if (shape.getGlobalBounds().intersects(s_destino.getGlobalBounds()) && s_pasajero.getColor() == Color(50,50,50))
       {
           //s_destino.setColor(Color(50,50,50));
+
          vari = 1;
-         puntuacion_total = puntuacion_total + puntuacion;
+         tiempo_carrera2 ;
+         puntuacion_total = puntuacion_total + (puntuacion/exp(tiempo_carrera2));
+         tiempo_carrera2 = 0;
       }
 
   
@@ -514,6 +517,14 @@ void taxi::render()
     if ( shape.getGlobalBounds().intersects(aux[0].getGlobalBounds()) )
           {
              s_pasajero.setColor(Color(50,50,50)); 
+
+             tiempo_carrera += 0.5;
+             if (tiempo_carrera > 35)
+             {
+              tiempo_carrera2++;
+              tiempo_carrera =  0;
+
+             }
                  
           }
           else

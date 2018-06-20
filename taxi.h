@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <string.h>
 #include <random>
+#include <math.h>
 
 #include <graphalgorithms.H>
 
@@ -30,12 +31,14 @@ class taxi
       RenderWindow window;
       Event evee, evento_main;
 
+      float tiempo_carrera2, tiempo_carrera;
       bool isPlay{true};
       int fps, conteo_camino=0;
       //variables de TEXTO
       Font fuente1;
       Text txt_titulo, txt_camino, num_time, txt_d_gasolina, txt_puntuacion,num_puntuacion, txt_costo,num_costo;
-      int puntuacion, puntuacion_total=0;
+      int puntuacion;
+      float puntuacion_total=0;
 
       int cg[100], kl=1, kl2=0;
 
