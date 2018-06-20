@@ -31,25 +31,28 @@ class taxi
       Event evee, evento_main;
 
       bool isPlay{true};
-      int fps;
+      int fps, conteo_camino=0;
       //variables de TEXTO
       Font fuente1;
       Text txt_titulo, txt_camino, num_time, txt_d_gasolina, txt_puntuacion,num_puntuacion, txt_costo,num_costo;
       int puntuacion, puntuacion_total=0;
 
+      int cg[100], kl=1, kl2=0;
+
       CircleShape shape;
       //obstaculos
-      RectangleShape obs[17];
+      RectangleShape obs[17], cam_taxi[17];
       RectangleShape lineas_v[20];
       RectangleShape lineas_h[20];
 
+      bool aviso[17];
 
 
       int inter=0;
       //grafo
 
       mgra grafo, auxgraf;
-      mgra::Node * gn[20];
+      mgra::Node * gn[20], * mg[20];
       int ii=0;
 
       RectangleShape g_paradas[20], aux[20];
