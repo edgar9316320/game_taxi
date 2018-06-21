@@ -40,7 +40,8 @@ void taxi::inic()
        !t_obs_1.loadFromFile("imagenes/obs_1.png") ||
        !t_destino.loadFromFile("imagenes/destino_32.png") ||
        !t_pasajero.loadFromFile("imagenes/user_32.png") ||
-       !t_gasolinera.loadFromFile("imagenes/gasolinera_32.png") )
+       !t_gasolinera.loadFromFile("imagenes/gasolinera_32.png") ||
+       !t_perdiste.loadFromFile("imagenes/perdiste.png") )
     {
       // error...
       //return 1;
@@ -50,6 +51,8 @@ void taxi::inic()
   s_pasajero.setTexture(t_pasajero);
   s_destino.setTexture(t_destino);
   s_gasolinera.setTexture(t_gasolinera);
+  s_perdiste.setTexture(t_perdiste);
+
 
   
   
@@ -253,7 +256,7 @@ void taxi::inic()
   txt_costo.setString("CC$:");
   txt_puntuacion.setString("DG$:");
   txt_costo.setPosition(TAM_CEL*9+5,5);
-  txt_puntuacion.setPosition(TAM_CEL*4,5);
+  txt_puntuacion.setPosition(TAM_CEL*3,5);
 
   txt_titulo.setString("Life:");
   txt_titulo.setPosition(500,15);
@@ -267,7 +270,7 @@ void taxi::inic()
   num_time.setPosition(TAM_CEL*15, 5);
   num_puntuacion.setFont(fuente1);
   num_puntuacion.setColor(c_obs);
-  num_puntuacion.setPosition(TAM_CEL*6,5);
+  num_puntuacion.setPosition(TAM_CEL*4+30,5);
 
   txt_d_gasolina.setFont(fuente1);
   txt_d_gasolina.setPosition(TAM_CEL*13, 5);  
@@ -276,7 +279,7 @@ void taxi::inic()
   
   txt_titulo.setFont(fuente1);
   txt_titulo.setString("EDGE");
-  txt_titulo.setPosition(TAM_CEL,15);
+  txt_titulo.setPosition(TAM_CEL,5);
   txt_titulo.setColor(c_obs);
 
   for (int i = 0; i < 20; ++i)
@@ -316,7 +319,9 @@ void taxi::eventos()
                       shape.setPosition(TAM_CEL*7+40, 15);
 
                   
-            
+        
+        if (Keyboard::isKeyPressed(sf::Keyboard::A))
+           inicio = true;        
 
         if (Keyboard::isKeyPressed(sf::Keyboard::Left))
            shape.move(-VEL_BALL,inter);
@@ -467,7 +472,14 @@ void taxi::update()
       s_gasolinera.setColor(Color(50,50,50));
       if (ti3 > 35)
         {
-        gasolina--;
+          if (gasolina == 0)
+          {
+
+          }else
+          {
+              gasolina--;
+            
+          }
         ti3 = 0;
          }
     }
@@ -485,10 +497,30 @@ void taxi::update()
 
 void taxi::render()
 {
-  
-
   window.clear(sf::Color(29,29,29));
- 
+  if (gasolina == 0)
+  { 
+
+    window.draw(s_perdiste);
+    if (inicio == true)
+    {
+
+    shape.setPosition(TAM_CEL*7+40, 15);
+    gasolina = 200;
+    puntuacion_total = 0;
+    puntuacion = 0;
+      
+    }
+
+
+  }else
+  {
+    
+
+    
+
+
+
     for (int j = 0; j < 20; ++j)
     {
       /* code */
@@ -565,7 +597,7 @@ void taxi::render()
   window.draw(obs[16]);
 
   window.draw(txt_titulo);
-  window.draw(num_time);
+  //window.draw(num_time);
   window.draw(num_puntuacion);
   window.draw(txt_d_gasolina);
   window.draw(txt_puntuacion);
@@ -574,6 +606,7 @@ void taxi::render()
   
   ii =0;
 
+  }
 
 
   window.display();

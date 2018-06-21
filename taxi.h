@@ -65,11 +65,11 @@ class taxi
       int na = 0;
 
 
-    bool vari{false};
+    bool vari{false}, inicio{false};
 
       //texturas------
-      Texture t_home, t_obs_1, t_pasajero, t_destino, t_gasolinera;
-      Sprite s_home, s_obs_1, s_pasajero, s_destino, s_gasolinera;
+      Texture t_home, t_obs_1, t_pasajero, t_destino, t_gasolinera, t_perdiste;
+      Sprite s_home, s_obs_1, s_pasajero, s_destino, s_gasolinera, s_perdiste;
 
       //variables de texto
       int gasolina = 200;
