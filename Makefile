@@ -4,7 +4,7 @@
 
 #g++ main.o crazyball.o -o crazyball -L ~/Descargas/Aleph-w -lAleph-w -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-DESIGNAR = ~/Descargas/AYDA/lab04/DeSiGNAR
+DESIGNAR = /home/debian/Descargas/DeSiGNARedg/DeSiGNAR
 
 CXX = clang++ -std=c++14
 
@@ -15,9 +15,9 @@ FLAGS = -DDEBUG -D_GLIBCXX__PTHREADS -g -O0 $(WARN)
 
 OPT = -DNDEBUG -Ofast $(WARN)
 
-INCLUDE = -I. -I $(DESIGNAR)/include 
+INCLUDE = -I. -I $(DESIGNAR)/include
 
-LIBS = taxi.o -L $(DESIGNAR)/lib -lDesignar -lgsl -lgslcblas -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+LIBS = taxi.o -L $(DESIGNAR)/lib -lDesignar -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 all: main
 
