@@ -1,9 +1,6 @@
+#Makefile diseñado para compilar GraphTax utilizando DeSiGNAR y SFML
 
-#g++ -c main.cpp crazyball.cpp -I ~/Descargas/Aleph-w 
-
-
-#g++ main.o crazyball.o -o crazyball -L ~/Descargas/Aleph-w -lAleph-w -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-
+#DeSiGNAR 
 DESIGNAR = /home/debian/Descargas/DeSiGNARedg/DeSiGNAR
 
 CXX = clang++ -std=c++14
